@@ -258,6 +258,7 @@ public class GameActivity extends BaseActivity implements ControlButtonMenuListe
                      case 2: dialogSendCustomKey(); break;
                      case 3: openQuickSettings(); break;
                      case 4: openCustomControls(); break;
+                                             case 5: new git.artdeell.mojo.modui.ModUiDialog(GameActivity.this).show(); break;
                 }
                 drawerLayout.closeDrawers();
             };
