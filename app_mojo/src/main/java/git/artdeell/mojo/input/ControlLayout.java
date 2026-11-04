@@ -38,6 +38,7 @@ import git.artdeell.mojo.input.handleview.ActionRow;
 import git.artdeell.mojo.input.handleview.ControlHandleView;
 import git.artdeell.mojo.input.handleview.EditControlSideDialog;
 import git.artdeell.mojo.game.platform.Platform;
+import git.artdeell.mojo.modui.ModUiServer;
 import git.artdeell.mojo.prefs.LauncherPreferences;
 
 import java.io.File;
@@ -264,8 +265,63 @@ public class ControlLayout extends FrameLayout {
 		mControlVisible = isVisible;
 		for(ControlInterface button : getButtonChildren()){
             // Avoid going through the JNI each time.
-            button.setVisible(((button.getProperties().displayInGame && Platform.isGrabbing()) || (button.getProperties().displayInMenu && !Platform.isGrabbing())) && isVisible);
+            button.setVisible(shouldShow(button.getProperties(), Platform.isGrabbing()) && isVisible);
 		}
+	}
+
+	/** Visibility rule shared by every control: Zenkai context buttons follow the ModUi screen, the rest follow the grab state. */
+	public boolean shouldShow(ControlData data, boolean isGrabbing) {
+		if (data.zenkaiContextos != null && !data.zenkaiContextos.isEmpty() && ModUiServer.INSTANCE.connected) {
+			return isZenkaiContextActive(data);
+		}
+		return (data.displayInGame && isGrabbing) || (data.displayInMenu && !isGrabbing);
+	}
+
+	public boolean isZenkaiContextActive(ControlData data) {
+		String screen = ModUiServer.INSTANCE.screen;
+		screen = screen == null ? "" : screen.toLowerCase(java.util.Locale.ROOT);
+		boolean world = ModUiServer.INSTANCE.inWorld;
+		for (String raw : data.zenkaiContextos) {
+			if (raw == null) continue;
+			String c = raw.toLowerCase(java.util.Locale.ROOT);
+			switch (c) {
+				case "mundo":
+					if (world && screen.isEmpty()) return true;
+					break;
+				case "inventario":
+				case "container":
+					if (screen.contains("container") || screen.contains("inventory") || screen.contains("chest")
+							|| screen.contains("shulker") || screen.contains("merchant") || screen.contains("anvil")
+							|| screen.contains("furnace") || screen.contains("hopper")) return true;
+					break;
+				case "dialogo":
+					if (screen.contains("chat") || screen.contains("dialog") || screen.contains("sign")
+							|| screen.contains("bookedit")) return true;
+					break;
+				default:
+					if (!c.isEmpty() && screen.contains(c)) return true;
+			}
+		}
+		return false;
+	}
+
+	private final Runnable mContextRefresh = () -> {
+		if (mModifiable || mLayout == null) return;
+		for (ControlInterface button : getButtonChildren()) {
+			button.setVisible(shouldShow(button.getProperties(), Platform.isGrabbing()) && mControlVisible);
+		}
+	};
+
+	@Override
+	protected void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		ModUiServer.INSTANCE.contextListener = mContextRefresh;
+	}
+
+	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		if (ModUiServer.INSTANCE.contextListener == mContextRefresh) ModUiServer.INSTANCE.contextListener = null;
 	}
 
 	public void setModifiable(boolean isModifiable) {

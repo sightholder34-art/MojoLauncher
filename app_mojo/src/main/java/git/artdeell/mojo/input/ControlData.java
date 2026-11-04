@@ -65,6 +65,10 @@ public class ControlData {
     public boolean displayInGame;
     public boolean displayInMenu;
     public String bitmapTag;
+
+    /** Zenkai look: icon name, "tile" or "chip" style and the screens where the button is shown. */
+    public String zenkaiIcone, zenkaiEstilo;
+    public List<String> zenkaiContextos;
     private float width;         //Dp instead of Px now
     private float height;        //Dp instead of Px now
 
@@ -153,6 +157,9 @@ public class ControlData {
                 controlData.passThruEnabled,
                 controlData.bitmapTag
         );
+        this.zenkaiIcone = controlData.zenkaiIcone;
+        this.zenkaiEstilo = controlData.zenkaiEstilo;
+        this.zenkaiContextos = controlData.zenkaiContextos == null ? null : new ArrayList<>(controlData.zenkaiContextos);
     }
 
     public static ControlData[] getSpecialButtons() {

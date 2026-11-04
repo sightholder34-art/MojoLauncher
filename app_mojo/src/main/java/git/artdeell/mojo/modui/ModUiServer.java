@@ -46,6 +46,8 @@ public class ModUiServer {
     public volatile JSONArray binds = new JSONArray();
     public volatile JSONArray commands = new JSONArray();
     public volatile Listener listener;
+    /** Called on the main thread when the reported screen or world state changes. */
+    public volatile Runnable contextListener;
 
     /** Starts the server once and returns the JVM arguments the game needs. */
     public synchronized List<String> start() throws IOException {
@@ -141,6 +143,8 @@ public class ModUiServer {
         mainHandler.post(() -> {
             Listener l = listener;
             if (l != null) l.onModUiUpdate();
+            Runnable c = contextListener;
+            if (c != null) c.run();
         });
     }
 
