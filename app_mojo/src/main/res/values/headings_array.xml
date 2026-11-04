@@ -18,7 +18,6 @@
         <item name="4">@string/global_save</item>
         <item name="5">@string/customctrl_selectdefault</item>
         <item name="6">@string/customctrl_export</item>
-                <item>Atajos</item>
     </string-array>
 
     <string-array name="menu_ingame">
@@ -27,6 +26,7 @@
         <item>@string/control_customkey</item>
         <item>@string/quick_setting_title</item>
         <item>@string/mcl_option_customcontrol</item>
+        <item>Atajos</item>
     </string-array>
 
     <string-array name="download_source_names">
