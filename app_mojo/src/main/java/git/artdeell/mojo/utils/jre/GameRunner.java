@@ -308,11 +308,11 @@ public class GameRunner {
         }
         javaArgList.add("-Dorg.lwjgl.opengl.libname=libGLMojo.so");
         javaArgList.add("-Dorg.lwjgl.freetype.libname="+ Tools.NATIVE_LIB_DIR+"/libfreetype.so");
-                try {
+        try {
             javaArgList.addAll(git.artdeell.mojo.modui.ModUiServer.INSTANCE.start());
         } catch (java.io.IOException e) {
             Log.w("GameRunner", "ModUi server did not start", e);
-                }
+        }
 
         activity.runOnUiThread(() -> Toast.makeText(activity, activity.getString(R.string.autoram_info_msg,LauncherPreferences.PREF_RAM_ALLOCATION), Toast.LENGTH_SHORT).show());
 
