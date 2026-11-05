@@ -75,6 +75,7 @@ public class ControlData {
     /** Mod key bind name (e.g. key.dbgalaxy.grab); the key the mod reports wins over keycodes. */
     public String zenkaiBind;
 
+    @Keep
     public static class ZenkaiMenu {
         public String titulo, nota;
         public int colunas = 1;
@@ -84,6 +85,7 @@ public class ControlData {
         public List<ZenkaiOpcao> opcoes;
     }
 
+    @Keep
     public static class ZenkaiOpcao {
         public String nome, dica, icone;
         /** Name of a mod key bind (e.g. key.dragonminez.technique_slot_1); the real key is taken from what the mod reports. */
