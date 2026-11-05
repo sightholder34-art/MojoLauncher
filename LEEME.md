@@ -1,16 +1,9 @@
-# Parche Zenkai para MojoLauncher (v5: arregla teclas equivocadas)
-
+# Parche Zenkai para MojoLauncher (v6)
 Copia app_mojo encima de tu proyecto y compila; carga layout_zenkai_mobile_styled.json.
 
-BUG ARREGLADO (modui/ModUiInput.java + LayoutConverter.keyCodeFromGLFW ahora public):
-el bridge manda codigos GLFW, pero PLATFORM.sendKeyEvent espera codigos ANDROID. Se enviaban tal cual:
-GLFW 50 ("2") llegaba como Android 50 = V (estadisticas). Ahora se convierte. Tambien se arreglo:
-- botones del mouse (GLFW 0/1/2 -> MotionEvent PRIMARY/SECONDARY/TERTIARY; antes clic derecho salia como izquierdo)
-- teclas modificadoras (Alt/Ctrl/Shift) enviadas con codigo GLFW.
-Esto tambien corrige el menu Shortcuts (ModUiDialog), que usa la misma clase.
-
-Layout: Dash, Charge Ki, Focus, Fly, Jump, Sneak y Boost ahora usan zenkaiBind (la tecla real del juego); si no hay bridge usan el keycode de antes.
-Si un bind no existe o esta sin asignar, sale un aviso "Bind not found / unbound: <nombre>" una vez.
-
-Sin resolver: Ki blast (sin bind) y Transform (action_key es suposicion).
+v6: los menus ya no se encimen con los botones.
+- Causa: los botones tienen translationZ=10 y el menu tenia 0, asi que Android dibujaba los botones ENCIMA del menu. Ahora el menu tiene mayor elevacion.
+- Ademas: el menu se coloca arriba/abajo/derecha/izquierda del boton, donde tape menos botones, y los que queden debajo se ocultan mientras esta abierto.
+- Shortcuts (boton Menu): oculta los botones bajo la ventana y los devuelve al cerrarla.
+v5: arreglo de teclas GLFW/Android. Sin resolver: Ki blast y Transform.
 No compilado aqui (sin SDK ni red).

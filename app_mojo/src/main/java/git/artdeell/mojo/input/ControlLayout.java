@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Insets;
 import android.graphics.Point;
+import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -320,23 +321,79 @@ public class ControlLayout extends FrameLayout {
 		mZenkaiPopup = popup;
 		mZenkaiPopupOwner = owner;
 		popup.setVisibility(INVISIBLE);
+		popup.setTranslationZ(Tools.dpToPx(40f)); // buttons use translationZ 10: stay above them
 		addView(popup, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		popup.post(() -> {
 			if (mZenkaiPopup != popup) return;
 			int pw = popup.getWidth(), ph = popup.getHeight();
-			int margin = (int) Tools.dpToPx(6f);
-			float x = owner.getX() + owner.getWidth() / 2f - pw / 2f;
-			float y = owner.getY() - ph - margin;           // above the button
-			if (y < margin) y = owner.getY() + owner.getHeight() + margin; // otherwise below it
-			x = Math.max(margin, Math.min(x, getWidth() - pw - margin));
-			y = Math.max(margin, Math.min(y, getHeight() - ph - margin));
-			popup.setX(x);
-			popup.setY(y);
+			float m = Tools.dpToPx(6f);
+			float ox = owner.getX(), oy = owner.getY(), ow = owner.getWidth(), oh = owner.getHeight();
+			// candidate spots: above, below, right, left of the button; keep the one covering the fewest other buttons
+			float[][] spots = {
+					{ox + ow / 2f - pw / 2f, oy - ph - m},
+					{ox + ow / 2f - pw / 2f, oy + oh + m},
+					{ox + ow + m, oy + oh / 2f - ph / 2f},
+					{ox - pw - m, oy + oh / 2f - ph / 2f}};
+			float bestX = 0, bestY = 0, bestScore = Float.MAX_VALUE;
+			for (float[] sp : spots) {
+				float x = Math.max(m, Math.min(sp[0], getWidth() - pw - m));
+				float y = Math.max(m, Math.min(sp[1], getHeight() - ph - m));
+				RectF r = new RectF(x, y, x + pw, y + ph);
+				float score = overlapArea(r, owner);
+				if (r.intersects(ox, oy, ox + ow, oy + oh)) score += pw * ph; // never sit on its own button
+				if (score < bestScore) { bestScore = score; bestX = x; bestY = y; }
+			}
+			popup.setX(bestX);
+			popup.setY(bestY);
 			popup.setVisibility(VISIBLE);
+			dimUnder(new RectF(bestX, bestY, bestX + pw, bestY + ph), owner);
 		});
 	}
 
+	private final java.util.Map<View, Float> mDimmed = new java.util.HashMap<>();
+
+	private float overlapArea(RectF r, View except) {
+		float total = 0;
+		for (ControlInterface b : getButtonChildren()) {
+			View v = b.getControlView();
+			if (v == except || v.getVisibility() != VISIBLE) continue;
+			float w = Math.min(r.right, v.getX() + v.getWidth()) - Math.max(r.left, v.getX());
+			float h = Math.min(r.bottom, v.getY() + v.getHeight()) - Math.max(r.top, v.getY());
+			if (w > 0 && h > 0) total += w * h;
+		}
+		return total;
+	}
+
+	/** Fades the buttons that sit under a menu so they do not show through it; restoreDimmed() undoes it. */
+	public void dimUnder(RectF area, View except) {
+		restoreDimmed();
+		for (ControlInterface b : getButtonChildren()) {
+			View v = b.getControlView();
+			if (v == except || v.getVisibility() != VISIBLE) continue;
+			if (area.intersects(v.getX(), v.getY(), v.getX() + v.getWidth(), v.getY() + v.getHeight())) {
+				mDimmed.put(v, v.getAlpha());
+				v.setAlpha(0f);
+			}
+		}
+	}
+
+	public void restoreDimmed() {
+		for (java.util.Map.Entry<View, Float> e : mDimmed.entrySet()) e.getKey().setAlpha(e.getValue());
+		mDimmed.clear();
+	}
+
+	/** Opens the Shortcuts window (left side of the screen) and hides the buttons it would cover. */
+	public void showShortcutsDialog() {
+		git.artdeell.mojo.modui.ModUiDialog dialog = new git.artdeell.mojo.modui.ModUiDialog(getContext());
+		android.util.DisplayMetrics dm = getResources().getDisplayMetrics();
+		float w = Math.min(Tools.dpToPx(430f), dm.widthPixels * 0.62f);
+		dimUnder(new RectF(0, dm.heightPixels * 0.03f, w, dm.heightPixels * 0.97f), null);
+		dialog.setOnDismissListener(d -> restoreDimmed());
+		dialog.show();
+	}
+
 	public void dismissZenkaiMenu() {
+		restoreDimmed();
 		if (mZenkaiPopup != null) removeView(mZenkaiPopup);
 		mZenkaiPopup = null;
 		mZenkaiPopupOwner = null;

@@ -368,7 +368,7 @@ public class ControlButton extends TextView implements ControlInterface {
                 mControlLayout.notifyAppMenu();
                 break;
             case ControlData.SPECIALBTN_SHORTCUTS:
-                if(isDown) new git.artdeell.mojo.modui.ModUiDialog(getContext()).show();
+                if(isDown) getControlLayoutParent().showShortcutsDialog();
                 break;
         }
     }
