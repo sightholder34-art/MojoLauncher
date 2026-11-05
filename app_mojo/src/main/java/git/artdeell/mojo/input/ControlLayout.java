@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.WindowInsets;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ import git.artdeell.mojo.input.handleview.ControlHandleView;
 import git.artdeell.mojo.input.handleview.EditControlSideDialog;
 import git.artdeell.mojo.game.platform.Platform;
 import git.artdeell.mojo.modui.ModUiServer;
+import git.artdeell.mojo.input.buttons.ZenkaiPopup;
 import git.artdeell.mojo.prefs.LauncherPreferences;
 
 import java.io.File;
@@ -232,6 +234,7 @@ public class ControlLayout extends FrameLayout {
 
 
 	private void removeAllButtons() {
+		dismissZenkaiMenu();
 		for(ControlInterface button : getButtonChildren()){
 			removeView(button.getControlView());
 		}
@@ -303,6 +306,40 @@ public class ControlLayout extends FrameLayout {
 			}
 		}
 		return false;
+	}
+
+	private ZenkaiPopup mZenkaiPopup;
+	private ControlButton mZenkaiPopupOwner;
+
+	/** Opens (or closes, when tapped again) the popup menu defined by the button, placed next to it. */
+	public void toggleZenkaiMenu(ControlButton owner) {
+		boolean same = mZenkaiPopupOwner == owner;
+		dismissZenkaiMenu();
+		if (same || !owner.hasZenkaiMenu()) return;
+		final ZenkaiPopup popup = new ZenkaiPopup(getContext(), owner.getProperties().zenkaiMenu, this::dismissZenkaiMenu);
+		mZenkaiPopup = popup;
+		mZenkaiPopupOwner = owner;
+		popup.setVisibility(INVISIBLE);
+		addView(popup, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		popup.post(() -> {
+			if (mZenkaiPopup != popup) return;
+			int pw = popup.getWidth(), ph = popup.getHeight();
+			int margin = (int) Tools.dpToPx(6f);
+			float x = owner.getX() + owner.getWidth() / 2f - pw / 2f;
+			float y = owner.getY() - ph - margin;           // above the button
+			if (y < margin) y = owner.getY() + owner.getHeight() + margin; // otherwise below it
+			x = Math.max(margin, Math.min(x, getWidth() - pw - margin));
+			y = Math.max(margin, Math.min(y, getHeight() - ph - margin));
+			popup.setX(x);
+			popup.setY(y);
+			popup.setVisibility(VISIBLE);
+		});
+	}
+
+	public void dismissZenkaiMenu() {
+		if (mZenkaiPopup != null) removeView(mZenkaiPopup);
+		mZenkaiPopup = null;
+		mZenkaiPopupOwner = null;
 	}
 
 	private final Runnable mContextRefresh = () -> {

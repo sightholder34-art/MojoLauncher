@@ -49,6 +49,17 @@ public class ModUiServer {
     /** Called on the main thread when the reported screen or world state changes. */
     public volatile Runnable contextListener;
 
+    /** The bind the mod reported with this name, or null when not connected / unknown / unbound. */
+    public JSONObject findBind(String name) {
+        if (name == null || name.isEmpty()) return null;
+        JSONArray list = binds;
+        for (int i = 0; list != null && i < list.length(); i++) {
+            JSONObject b = list.optJSONObject(i);
+            if (b != null && name.equals(b.optString("name")) && b.optInt("glfw", -1) >= 0) return b;
+        }
+        return null;
+    }
+
     /** Starts the server once and returns the JVM arguments the game needs. */
     public synchronized List<String> start() throws IOException {
         if (server == null || server.isClosed()) {

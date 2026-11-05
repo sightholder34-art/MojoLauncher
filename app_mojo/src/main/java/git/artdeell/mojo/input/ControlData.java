@@ -69,6 +69,29 @@ public class ControlData {
     /** Zenkai look: icon name, "tile" or "chip" style and the screens where the button is shown. */
     public String zenkaiIcone, zenkaiEstilo;
     public List<String> zenkaiContextos;
+    /** Popup menu opened by this button: "toque" (tap) or "longo" (long press, default for buttons that also act). */
+    public ZenkaiMenu zenkaiMenu;
+    public String zenkaiMenuGatilho;
+    /** Mod key bind name (e.g. key.dbgalaxy.grab); the key the mod reports wins over keycodes. */
+    public String zenkaiBind;
+
+    public static class ZenkaiMenu {
+        public String titulo, nota;
+        public int colunas = 1;
+        public List<ZenkaiOpcao> opcoes;
+    }
+
+    public static class ZenkaiOpcao {
+        public String nome, dica, icone;
+        /** Name of a mod key bind (e.g. key.dragonminez.technique_slot_1); the real key is taken from what the mod reports. */
+        public String bind;
+        /** Android keycodes pressed together (0 = not assigned yet). */
+        public int[] keycodes;
+        /** "toque" = press and release, "segurar" = held while the finger is down. */
+        public String modo = "toque";
+        /** Takes a whole row instead of one grid cell. */
+        public boolean largo;
+    }
     private float width;         //Dp instead of Px now
     private float height;        //Dp instead of Px now
 
@@ -160,6 +183,9 @@ public class ControlData {
         this.zenkaiIcone = controlData.zenkaiIcone;
         this.zenkaiEstilo = controlData.zenkaiEstilo;
         this.zenkaiContextos = controlData.zenkaiContextos == null ? null : new ArrayList<>(controlData.zenkaiContextos);
+        this.zenkaiMenu = controlData.zenkaiMenu;
+        this.zenkaiMenuGatilho = controlData.zenkaiMenuGatilho;
+        this.zenkaiBind = controlData.zenkaiBind;
     }
 
     public static ControlData[] getSpecialButtons() {
