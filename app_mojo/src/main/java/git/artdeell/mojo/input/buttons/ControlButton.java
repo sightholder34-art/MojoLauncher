@@ -42,6 +42,8 @@ public class ControlButton extends TextView implements ControlInterface {
     private final Paint mZenkaiPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint mZenkaiTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private boolean mZenkaiStyled;
+    /** Option picked from a "selecionar" menu: replaces this button's label, icon and key. */
+    private ControlData.ZenkaiOpcao mSel;
     private boolean mMenuLongPending;
     private final Runnable mOpenMenuRunnable = () -> {
         mMenuLongPending = false;
@@ -115,6 +117,7 @@ public class ControlButton extends TextView implements ControlInterface {
         else setupNormalTint();
 
         mZenkaiStyled = Tools.isValidString(properties.zenkaiIcone);
+        loadZenkaiSelection();
         setText(mZenkaiStyled ? "" : properties.name);
         invalidate();
     }
@@ -133,8 +136,8 @@ public class ControlButton extends TextView implements ControlInterface {
         float w = getWidth(), h = getHeight();
         if (w <= 0 || h <= 0) return;
         int ink = Color.rgb(242, 232, 207);
-        String icon = mProperties.zenkaiIcone;
-        String label = mProperties.name == null ? "" : mProperties.name;
+        String icon = mSel != null && mSel.icone != null ? mSel.icone : mProperties.zenkaiIcone;
+        String label = mSel != null && mSel.nome != null ? mSel.nome : (mProperties.name == null ? "" : mProperties.name);
         boolean chip = "chip".equals(mProperties.zenkaiEstilo);
         boolean iconOnly = "icon".equals(mProperties.zenkaiEstilo);
         if (hasZenkaiMenu() && !isMenuOnTap()) { // little arrow in the corner: long-press opens a menu
@@ -165,6 +168,26 @@ public class ControlButton extends TextView implements ControlInterface {
             fitText(label, w * 0.90f, Math.min(Tools.dpToPx(11f), h * 0.21f));
             canvas.drawText(label, w * 0.5f, h * 0.86f, mZenkaiTextPaint);
         }
+    }
+
+    public void setZenkaiSelection(ControlData.ZenkaiOpcao op, boolean save) {
+        mSel = op;
+        if (save && mProperties != null && mProperties.name != null) {
+            try {
+                getContext().getSharedPreferences("zenkai_sel", android.content.Context.MODE_PRIVATE).edit()
+                        .putString(mProperties.name, op == null ? null : Tools.GLOBAL_GSON.toJson(op)).apply();
+            } catch (Exception ignored) { }
+        }
+        invalidate();
+    }
+
+    private void loadZenkaiSelection() {
+        mSel = null;
+        if (mProperties == null || mProperties.name == null) return;
+        try {
+            String json = getContext().getSharedPreferences("zenkai_sel", android.content.Context.MODE_PRIVATE).getString(mProperties.name, null);
+            if (json != null) mSel = Tools.GLOBAL_GSON.fromJson(json, ControlData.ZenkaiOpcao.class);
+        } catch (Exception ignored) { }
     }
 
     public boolean hasZenkaiMenu() {
@@ -307,13 +330,18 @@ public class ControlButton extends TextView implements ControlInterface {
 
     public void sendKeyPresses(boolean isDown){
         setActivated(isDown);
-        if (Tools.isValidString(mProperties.zenkaiBind)) {
-            JSONObject bind = ModUiServer.INSTANCE.findBind(mProperties.zenkaiBind);
+        String bindName = mSel != null ? mSel.bind : mProperties.zenkaiBind;
+        if (Tools.isValidString(bindName)) {
+            JSONObject bind = ModUiServer.INSTANCE.findBind(bindName);
             if (bind != null) { // the key the mod reports (works even if the player rebinds it)
                 ModUiInput.press(bind, isDown);
                 return;
             }
-            ModUiServer.INSTANCE.warnMissing(getContext(), mProperties.zenkaiBind);
+            ModUiServer.INSTANCE.warnMissing(getContext(), bindName);
+        }
+        if (mSel != null) { // picked ability: use its own fixed keys, never the original button's
+            sendPlainKeys(mSel.keycodes, isDown);
+            return;
         }
         for(int keycode : mProperties.keycodes){
             if(keycode >= KeyEvent.KEYCODE_UNKNOWN){

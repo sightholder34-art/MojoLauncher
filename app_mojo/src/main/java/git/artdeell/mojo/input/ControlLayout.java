@@ -317,7 +317,8 @@ public class ControlLayout extends FrameLayout {
 		boolean same = mZenkaiPopupOwner == owner;
 		dismissZenkaiMenu();
 		if (same || !owner.hasZenkaiMenu()) return;
-		final ZenkaiPopup popup = new ZenkaiPopup(getContext(), owner.getProperties().zenkaiMenu, this::dismissZenkaiMenu);
+		final ZenkaiPopup popup = new ZenkaiPopup(getContext(), owner.getProperties().zenkaiMenu, this::dismissZenkaiMenu,
+				op -> applyZenkaiPick(owner.getProperties().zenkaiMenu.alvo, op));
 		mZenkaiPopup = popup;
 		mZenkaiPopupOwner = owner;
 		popup.setVisibility(INVISIBLE);
@@ -390,6 +391,16 @@ public class ControlLayout extends FrameLayout {
 		dimUnder(new RectF(0, dm.heightPixels * 0.03f, w, dm.heightPixels * 0.97f), null);
 		dialog.setOnDismissListener(d -> restoreDimmed());
 		dialog.show();
+	}
+
+	/** Makes the button called "target" act as the picked option (label, icon and key). */
+	private void applyZenkaiPick(String target, ControlData.ZenkaiOpcao op) {
+		if (target == null) return;
+		for (ControlInterface b : getButtonChildren()) {
+			if (b instanceof ControlButton && target.equals(b.getProperties().name)) {
+				((ControlButton) b).setZenkaiSelection(op, true);
+			}
+		}
 	}
 
 	public void dismissZenkaiMenu() {

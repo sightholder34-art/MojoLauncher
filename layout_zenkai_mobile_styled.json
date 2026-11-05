@@ -660,7 +660,10 @@
             "largo": false,
             "bind": "key.dragonminez.technique_slot_8"
           }
-        ]
+        ],
+        "selecionar": true,
+        "alvo": "Ki blast",
+        "nota": "Choosing does not activate the ability."
       },
       "zenkaiMenuGatilho": "toque"
     },
@@ -720,7 +723,10 @@
             "largo": false,
             "bind": "key.dragonminez.action_key"
           }
-        ]
+        ],
+        "selecionar": true,
+        "alvo": "Charge Ki",
+        "nota": "Choosing does not activate the ability."
       },
       "zenkaiMenuGatilho": "toque"
     },

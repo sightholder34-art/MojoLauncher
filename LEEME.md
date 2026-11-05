@@ -1,9 +1,9 @@
-# Parche Zenkai para MojoLauncher (v6)
+# Parche Zenkai para MojoLauncher (v7)
 Copia app_mojo encima de tu proyecto y compila; carga layout_zenkai_mobile_styled.json.
 
-v6: los menus ya no se encimen con los botones.
-- Causa: los botones tienen translationZ=10 y el menu tenia 0, asi que Android dibujaba los botones ENCIMA del menu. Ahora el menu tiene mayor elevacion.
-- Ademas: el menu se coloca arriba/abajo/derecha/izquierda del boton, donde tape menos botones, y los que queden debajo se ocultan mientras esta abierto.
-- Shortcuts (boton Menu): oculta los botones bajo la ventana y los devuelve al cerrarla.
-v5: arreglo de teclas GLFW/Android. Sin resolver: Ki blast y Transform.
+v7: los menus "Ki attacks" y "Energy & form" funcionan como en Zenkai: elegir una opcion NO la activa,
+reemplaza el boton "Ki blast" / "Charge Ki" (nombre, icono y tecla) y se recuerda al reabrir el juego.
+En el JSON: zenkaiMenu.selecionar=true y zenkaiMenu.alvo="<nombre del boton a reemplazar>".
+El menu Flight sigue activando directamente (como en el video).
+v6: menus encima de botones. v5: teclas GLFW/Android. Sin resolver: Ki blast (sin tecla) y Transform (suposicion).
 No compilado aqui (sin SDK ni red).

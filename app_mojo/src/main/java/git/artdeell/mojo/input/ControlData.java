@@ -78,6 +78,9 @@ public class ControlData {
     public static class ZenkaiMenu {
         public String titulo, nota;
         public int colunas = 1;
+        /** true = picking an option does not fire it: it replaces the button called "alvo" (and is remembered). */
+        public boolean selecionar;
+        public String alvo;
         public List<ZenkaiOpcao> opcoes;
     }
 

@@ -26,11 +26,15 @@ public class ZenkaiPopup extends LinearLayout {
     static final int GOLD = Color.rgb(214, 160, 70);
     static final int MUTED = Color.rgb(160, 148, 124);
 
-    private final Runnable mOnClose;
+    public interface OnPick { void onPick(ControlData.ZenkaiOpcao op); }
 
-    public ZenkaiPopup(Context context, ControlData.ZenkaiMenu menu, Runnable onClose) {
+    private final Runnable mOnClose;
+    private final OnPick mOnPick;
+
+    public ZenkaiPopup(Context context, ControlData.ZenkaiMenu menu, Runnable onClose, OnPick onPick) {
         super(context);
         mOnClose = onClose;
+        mOnPick = menu.selecionar ? onPick : null;
         setOrientation(VERTICAL);
         setClickable(true); // swallow touches so they do not reach the game
         int pad = (int) Tools.dpToPx(8f);
@@ -107,13 +111,15 @@ public class ZenkaiPopup extends LinearLayout {
                 case MotionEvent.ACTION_DOWN:
                     v.setPressed(true);
                     v.setAlpha(0.7f);
-                    if (hold) fire(op, true);
+                    if (hold && mOnPick == null) fire(op, true);
                     return true;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     v.setPressed(false);
                     v.setAlpha(1f);
-                    if (hold) {
+                    if (mOnPick != null) { // picker: choosing replaces the quick button, it does not fire the ability
+                        if (e.getActionMasked() == MotionEvent.ACTION_UP) { mOnPick.onPick(op); mOnClose.run(); }
+                    } else if (hold) {
                         fire(op, false);
                     } else if (e.getActionMasked() == MotionEvent.ACTION_UP) {
                         fire(op, true);
