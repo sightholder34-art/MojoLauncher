@@ -111,14 +111,19 @@ public class ZenkaiPopup extends LinearLayout {
                 case MotionEvent.ACTION_DOWN:
                     v.setPressed(true);
                     v.setAlpha(0.7f);
-                    if (hold && mOnPick == null) fire(op, true);
+                    if (mOnPick != null) { // picker: apply on touch-down so a cancelled gesture cannot lose the choice
+                        mOnPick.onPick(op);
+                        mOnClose.run();
+                        return true;
+                    }
+                    if (hold) fire(op, true);
                     return true;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     v.setPressed(false);
                     v.setAlpha(1f);
-                    if (mOnPick != null) { // picker: choosing replaces the quick button, it does not fire the ability
-                        if (e.getActionMasked() == MotionEvent.ACTION_UP) { mOnPick.onPick(op); mOnClose.run(); }
+                    if (mOnPick != null) {
+                        // already handled on touch-down
                     } else if (hold) {
                         fire(op, false);
                     } else if (e.getActionMasked() == MotionEvent.ACTION_UP) {

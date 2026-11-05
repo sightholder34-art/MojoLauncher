@@ -395,12 +395,17 @@ public class ControlLayout extends FrameLayout {
 
 	/** Makes the button called "target" act as the picked option (label, icon and key). */
 	private void applyZenkaiPick(String target, ControlData.ZenkaiOpcao op) {
-		if (target == null) return;
-		for (ControlInterface b : getButtonChildren()) {
-			if (b instanceof ControlButton && target.equals(b.getProperties().name)) {
-				((ControlButton) b).setZenkaiSelection(op, true);
+		int found = 0;
+		if (target != null) {
+			for (ControlInterface b : getButtonChildren()) {
+				if (b instanceof ControlButton && target.equals(b.getProperties().name)) {
+					((ControlButton) b).setZenkaiSelection(op, true);
+					found++;
+				}
 			}
 		}
+		android.widget.Toast.makeText(getContext(), found > 0 ? (target + " -> " + op.nome)
+				: "No button named \"" + target + "\" to replace", android.widget.Toast.LENGTH_SHORT).show();
 	}
 
 	public void dismissZenkaiMenu() {
