@@ -66,14 +66,15 @@
         0,
         0
       ],
-      "name": "Agachar",
+      "name": "Sneak",
       "opacity": 0.94,
       "passThruEnabled": false,
       "strokeColor": -7706299,
       "strokeWidth": 2.0,
       "width": 57.136696,
       "zenkaiIcone": "sneak",
-      "zenkaiEstilo": "tile"
+      "zenkaiEstilo": "tile",
+      "zenkaiBind": "key.sneak"
     },
     {
       "bgColor": -652732651,
@@ -91,14 +92,49 @@
         0,
         0
       ],
-      "name": "Voar",
+      "name": "Fly",
       "opacity": 0.94,
       "passThruEnabled": false,
       "strokeColor": -7706299,
       "strokeWidth": 2.0,
       "width": 48.0,
       "zenkaiIcone": "fly",
-      "zenkaiEstilo": "tile"
+      "zenkaiEstilo": "tile",
+      "zenkaiMenu": {
+        "titulo": "Flight",
+        "colunas": 1,
+        "opcoes": [
+          {
+            "nome": "Fly / land",
+            "dica": "F",
+            "icone": "fly",
+            "keycodes": [
+              34,
+              0,
+              0,
+              0
+            ],
+            "modo": "toque",
+            "largo": false,
+            "bind": "key.dragonminez.fly_key"
+          },
+          {
+            "nome": "Fast flight",
+            "dica": "Alt + F",
+            "icone": "fly",
+            "keycodes": [
+              57,
+              34,
+              0,
+              0
+            ],
+            "modo": "toque",
+            "largo": false
+          }
+        ]
+      },
+      "zenkaiMenuGatilho": "longo",
+      "zenkaiBind": "key.dragonminez.fly_key"
     },
     {
       "bgColor": -652732651,
@@ -116,14 +152,15 @@
         0,
         0
       ],
-      "name": "Carregar / transformar",
+      "name": "Charge Ki",
       "opacity": 0.94,
       "passThruEnabled": false,
       "strokeColor": -2518211,
       "strokeWidth": 2.0,
       "width": 115.302895,
       "zenkaiIcone": "charge",
-      "zenkaiEstilo": "tile"
+      "zenkaiEstilo": "tile",
+      "zenkaiBind": "key.dragonminez.ki_charge"
     },
     {
       "bgColor": -652732651,
@@ -141,7 +178,7 @@
         0,
         0
       ],
-      "name": "Ataques de Ki",
+      "name": "Ki blast",
       "opacity": 0.94,
       "passThruEnabled": false,
       "strokeColor": -2518211,
@@ -166,14 +203,15 @@
         0,
         0
       ],
-      "name": "Focar",
+      "name": "Focus",
       "opacity": 0.94,
       "passThruEnabled": false,
       "strokeColor": -7706299,
       "strokeWidth": 2.0,
       "width": 53.5335,
       "zenkaiIcone": "target",
-      "zenkaiEstilo": "tile"
+      "zenkaiEstilo": "tile",
+      "zenkaiBind": "key.dragonminez.lock_on"
     },
     {
       "bgColor": -652732651,
@@ -198,7 +236,8 @@
       "strokeWidth": 2.0,
       "width": 57.651505,
       "zenkaiIcone": "dash",
-      "zenkaiEstilo": "tile"
+      "zenkaiEstilo": "tile",
+      "zenkaiBind": "key.dragonminez.dash_key"
     },
     {
       "bgColor": -1211099,
@@ -216,7 +255,7 @@
         0,
         0
       ],
-      "name": "Atacar",
+      "name": "Attack",
       "opacity": 0.94,
       "passThruEnabled": false,
       "strokeColor": -12935,
@@ -241,14 +280,15 @@
         0,
         0
       ],
-      "name": "Pular",
+      "name": "Jump",
       "opacity": 0.94,
       "passThruEnabled": false,
       "strokeColor": -7706299,
       "strokeWidth": 2.0,
       "width": 56.1072,
       "zenkaiIcone": "jump",
-      "zenkaiEstilo": "tile"
+      "zenkaiEstilo": "tile",
+      "zenkaiBind": "key.jump"
     },
     {
       "bgColor": -652732651,
@@ -266,7 +306,7 @@
         0,
         0
       ],
-      "name": "Usar",
+      "name": "Use",
       "opacity": 0.94,
       "passThruEnabled": false,
       "strokeColor": -7706299,
@@ -291,7 +331,7 @@
         0,
         0
       ],
-      "name": "Fechar",
+      "name": "Close",
       "opacity": 1.0,
       "passThruEnabled": false,
       "strokeColor": -2518211,
@@ -319,7 +359,7 @@
         0,
         0
       ],
-      "name": "Mover pilha",
+      "name": "Move stack",
       "opacity": 1.0,
       "passThruEnabled": false,
       "strokeColor": -2518211,
@@ -347,7 +387,7 @@
         0,
         0
       ],
-      "name": "Clique dir.",
+      "name": "Right click",
       "opacity": 1.0,
       "passThruEnabled": false,
       "strokeColor": -2518211,
@@ -375,7 +415,7 @@
         0,
         0
       ],
-      "name": "Fechar",
+      "name": "Close",
       "opacity": 1.0,
       "passThruEnabled": false,
       "strokeColor": -2518211,
@@ -404,7 +444,7 @@
         0,
         0
       ],
-      "name": "Teclado",
+      "name": "Keyboard",
       "opacity": 1.0,
       "passThruEnabled": false,
       "strokeColor": -2518211,
@@ -429,7 +469,7 @@
         0,
         0
       ],
-      "name": "Fechar",
+      "name": "Close",
       "opacity": 1.0,
       "passThruEnabled": false,
       "strokeColor": -2518211,
@@ -457,14 +497,258 @@
         0,
         0
       ],
-      "name": "Impulso",
+      "name": "Boost",
       "opacity": 0.94,
       "passThruEnabled": false,
       "strokeColor": -7706299,
       "strokeWidth": 2.0,
       "width": 51.474503,
       "zenkaiIcone": "boost",
-      "zenkaiEstilo": "tile"
+      "zenkaiEstilo": "tile",
+      "zenkaiBind": "key.sprint"
+    },
+    {
+      "bgColor": -652732651,
+      "cornerRadius": 21.0,
+      "displayInGame": true,
+      "displayInMenu": false,
+      "dynamicX": "(${screen_width} - ((((1 + ${screen_width} / px(823.592493) - abs(1 - ${screen_width} / px(823.592493))) / 2) + ${screen_height} / px(384.0) - abs(((1 + ${screen_width} / px(823.592493) - abs(1 - ${screen_width} / px(823.592493))) / 2) - ${screen_height} / px(384.0))) / 2) * px(204.868633) - px(115.302895) / 2) + px(115.302895) + px(4.0)",
+      "dynamicY": "(((((1 + ${screen_width} / px(823.592493) - abs(1 - ${screen_width} / px(823.592493))) / 2) + ${screen_height} / px(384.0) - abs(((1 + ${screen_width} / px(823.592493) - abs(1 - ${screen_width} / px(823.592493))) / 2) - ${screen_height} / px(384.0))) / 2) * px(33.458445) - px(57.651505) / 2) + px(0.0) / 2",
+      "height": 57.651505,
+      "isSwipeable": false,
+      "isToggle": false,
+      "keycodes": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "name": "Ki attacks",
+      "opacity": 0.94,
+      "passThruEnabled": false,
+      "strokeColor": -7706299,
+      "strokeWidth": 2.0,
+      "width": 40.0,
+      "zenkaiIcone": "chevron",
+      "zenkaiEstilo": "icon",
+      "zenkaiMenu": {
+        "titulo": "Ki attacks",
+        "colunas": 4,
+        "opcoes": [
+          {
+            "nome": "Ki blast",
+            "dica": "Single tap",
+            "icone": "ki",
+            "keycodes": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "modo": "toque",
+            "largo": true
+          },
+          {
+            "nome": "Ki 1",
+            "dica": "Hold",
+            "icone": "ki_beam",
+            "keycodes": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "modo": "segurar",
+            "largo": false,
+            "bind": "key.dragonminez.technique_slot_1"
+          },
+          {
+            "nome": "Ki 2",
+            "dica": "Hold",
+            "icone": "burst",
+            "keycodes": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "modo": "segurar",
+            "largo": false,
+            "bind": "key.dragonminez.technique_slot_2"
+          },
+          {
+            "nome": "Ki 3",
+            "dica": "Hold",
+            "icone": "orb",
+            "keycodes": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "modo": "segurar",
+            "largo": false,
+            "bind": "key.dragonminez.technique_slot_3"
+          },
+          {
+            "nome": "Ki 4",
+            "dica": "Hold",
+            "icone": "volley",
+            "keycodes": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "modo": "segurar",
+            "largo": false,
+            "bind": "key.dragonminez.technique_slot_4"
+          },
+          {
+            "nome": "Ki 5",
+            "dica": "Hold",
+            "icone": "ki_beam",
+            "keycodes": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "modo": "segurar",
+            "largo": false,
+            "bind": "key.dragonminez.technique_slot_5"
+          },
+          {
+            "nome": "Ki 6",
+            "dica": "Hold",
+            "icone": "burst",
+            "keycodes": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "modo": "segurar",
+            "largo": false,
+            "bind": "key.dragonminez.technique_slot_6"
+          },
+          {
+            "nome": "Ki 7",
+            "dica": "Hold",
+            "icone": "orb",
+            "keycodes": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "modo": "segurar",
+            "largo": false,
+            "bind": "key.dragonminez.technique_slot_7"
+          },
+          {
+            "nome": "Ki 8",
+            "dica": "Hold",
+            "icone": "volley",
+            "keycodes": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "modo": "segurar",
+            "largo": false,
+            "bind": "key.dragonminez.technique_slot_8"
+          }
+        ]
+      },
+      "zenkaiMenuGatilho": "toque"
+    },
+    {
+      "bgColor": -652732651,
+      "cornerRadius": 21.0,
+      "displayInGame": true,
+      "displayInMenu": false,
+      "dynamicX": "(((((1 + ${screen_width} / px(823.592493) - abs(1 - ${screen_width} / px(823.592493))) / 2) + ${screen_height} / px(384.0) - abs(((1 + ${screen_width} / px(823.592493) - abs(1 - ${screen_width} / px(823.592493))) / 2) - ${screen_height} / px(384.0))) / 2) * px(217.22252) - px(115.302895) / 2) + px(115.302895) + px(4.0)",
+      "dynamicY": "(${screen_height} - ((((1 + ${screen_width} / px(823.592493) - abs(1 - ${screen_width} / px(823.592493))) / 2) + ${screen_height} / px(384.0) - abs(((1 + ${screen_width} / px(823.592493) - abs(1 - ${screen_width} / px(823.592493))) / 2) - ${screen_height} / px(384.0))) / 2) * px(41.69437) - px(56.622) / 2) + px(0.0) / 2",
+      "height": 56.622,
+      "isSwipeable": false,
+      "isToggle": false,
+      "keycodes": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "name": "Energy & form",
+      "opacity": 0.94,
+      "passThruEnabled": false,
+      "strokeColor": -7706299,
+      "strokeWidth": 2.0,
+      "width": 40.0,
+      "zenkaiIcone": "chevron",
+      "zenkaiEstilo": "icon",
+      "zenkaiMenu": {
+        "titulo": "Energy & form",
+        "colunas": 2,
+        "opcoes": [
+          {
+            "nome": "Charge Ki",
+            "dica": "Hold / release",
+            "icone": "charge",
+            "keycodes": [
+              31,
+              0,
+              0,
+              0
+            ],
+            "modo": "segurar",
+            "largo": false,
+            "bind": "key.dragonminez.ki_charge"
+          },
+          {
+            "nome": "Transform",
+            "dica": "Hold / release",
+            "icone": "burst",
+            "keycodes": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "modo": "segurar",
+            "largo": false,
+            "bind": "key.dragonminez.action_key"
+          }
+        ]
+      },
+      "zenkaiMenuGatilho": "toque"
+    },
+    {
+      "bgColor": -652732651,
+      "cornerRadius": 21.0,
+      "displayInGame": true,
+      "displayInMenu": false,
+      "dynamicX": "${screen_width} - ((((1 + ${screen_width} / px(823.592493) - abs(1 - ${screen_width} / px(823.592493))) / 2) + ${screen_height} / px(384.0) - abs(((1 + ${screen_width} / px(823.592493) - abs(1 - ${screen_width} / px(823.592493))) / 2) - ${screen_height} / px(384.0))) / 2) * px(112.0) - ${width} / 2",
+      "dynamicY": "0.442359 * ${screen_height} - ${height} / 2",
+      "height": 52.0,
+      "isSwipeable": false,
+      "isToggle": false,
+      "keycodes": [
+        59,
+        33,
+        0,
+        0
+      ],
+      "name": "Grab & throw",
+      "opacity": 0.94,
+      "passThruEnabled": false,
+      "strokeColor": -7706299,
+      "strokeWidth": 2.0,
+      "width": 52.0,
+      "zenkaiIcone": "grab",
+      "zenkaiEstilo": "tile",
+      "zenkaiBind": "key.dbgalaxy.grab"
     }
   ],
   "mDrawerDataList": [],

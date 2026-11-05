@@ -1,15 +1,16 @@
-# Parche Zenkai para MojoLauncher (hecho sobre el código del zip que subiste)
+# Parche Zenkai para MojoLauncher (v5: arregla teclas equivocadas)
 
-Archivos (copiar encima del proyecto, mismas rutas):
-- ControlData.java    -> campos zenkaiIcone / zenkaiEstilo / zenkaiContextos (se guardan y copian con el layout)
-- ControlButton.java  -> dibuja icono + etiqueta de 1 línea pequeña (estilo "tile", "chip" o "icon"); el fondo/borde sigue siendo el de Mojo
-- ControlLayout.java / ControlInterface.java -> visibilidad por contexto (container, inventario, dialogo...) según la pantalla que reporta ModUi Bridge
-- ModUiServer.java    -> avisa al layout cuando cambia la pantalla
+Copia app_mojo encima de tu proyecto y compila; carga layout_zenkai_mobile_styled.json.
 
-Luego cargar layout_zenkai_mobile_styled.json (tu mismo layout con los campos nuevos).
+BUG ARREGLADO (modui/ModUiInput.java + LayoutConverter.keyCodeFromGLFW ahora public):
+el bridge manda codigos GLFW, pero PLATFORM.sendKeyEvent espera codigos ANDROID. Se enviaban tal cual:
+GLFW 50 ("2") llegaba como Android 50 = V (estadisticas). Ahora se convierte. Tambien se arreglo:
+- botones del mouse (GLFW 0/1/2 -> MotionEvent PRIMARY/SECONDARY/TERTIARY; antes clic derecho salia como izquierdo)
+- teclas modificadoras (Alt/Ctrl/Shift) enviadas con codigo GLFW.
+Esto tambien corrige el menu Shortcuts (ModUiDialog), que usa la misma clase.
 
-Notas:
-- NO usar el ZenkaiLayoutUpdate anterior encima de este proyecto: borra el botón Atajos (-11, el que usa "Menu") y llama a ModUiControlButton, que no existe aquí.
-- No lo compilé (sin Android SDK ni red aquí): lo revisé a mano, llaves/paréntesis balanceados. Compila con tu workflow de GitHub y mándame el error si sale alguno.
-- Chat y Ataques de Ki tienen keycode 0 en tu JSON: se ven bien pero no hacen nada hasta asignarles una tecla.
-- Los botones Fechar extra los asigné a contextos por suposición (container / habilidades+atributos / dialogo); se editan en el JSON.
+Layout: Dash, Charge Ki, Focus, Fly, Jump, Sneak y Boost ahora usan zenkaiBind (la tecla real del juego); si no hay bridge usan el keycode de antes.
+Si un bind no existe o esta sin asignar, sale un aviso "Bind not found / unbound: <nombre>" una vez.
+
+Sin resolver: Ki blast (sin bind) y Transform (action_key es suposicion).
+No compilado aqui (sin SDK ni red).

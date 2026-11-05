@@ -313,6 +313,7 @@ public class ControlButton extends TextView implements ControlInterface {
                 ModUiInput.press(bind, isDown);
                 return;
             }
+            ModUiServer.INSTANCE.warnMissing(getContext(), mProperties.zenkaiBind);
         }
         for(int keycode : mProperties.keycodes){
             if(keycode >= KeyEvent.KEYCODE_UNKNOWN){

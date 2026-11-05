@@ -127,10 +127,11 @@ public class ZenkaiPopup extends LinearLayout {
     }
 
     /** Uses the key the mod reports for op.bind; falls back to the fixed keycodes when it is unknown. */
-    private static void fire(ControlData.ZenkaiOpcao op, boolean down) {
+    private void fire(ControlData.ZenkaiOpcao op, boolean down) {
         JSONObject b = ModUiServer.INSTANCE.findBind(op.bind);
-        if (b != null) ModUiInput.press(b, down);
-        else ControlButton.sendPlainKeys(op.keycodes, down);
+        if (b != null) { ModUiInput.press(b, down); return; }
+        if (op.bind != null && !op.bind.isEmpty()) ModUiServer.INSTANCE.warnMissing(getContext(), op.bind);
+        ControlButton.sendPlainKeys(op.keycodes, down);
     }
 
     static GradientDrawable box(int fill, int stroke, float radiusDp, float strokeDp) {

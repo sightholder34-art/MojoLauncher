@@ -49,6 +49,16 @@ public class ModUiServer {
     /** Called on the main thread when the reported screen or world state changes. */
     public volatile Runnable contextListener;
 
+    private final java.util.Set<String> mWarned = new java.util.HashSet<>();
+
+    /** Shows a short toast (once per name) when the bridge is connected but has no usable key for this bind name. */
+    public void warnMissing(android.content.Context ctx, String name) {
+        JSONArray list = binds;
+        if (!connected || list == null || list.length() == 0 || name == null) return;
+        if (!mWarned.add(name)) return;
+        android.widget.Toast.makeText(ctx, "Bind not found / unbound: " + name, android.widget.Toast.LENGTH_LONG).show();
+    }
+
     /** The bind the mod reported with this name, or null when not connected / unknown / unbound. */
     public JSONObject findBind(String name) {
         if (name == null || name.isEmpty()) return null;
