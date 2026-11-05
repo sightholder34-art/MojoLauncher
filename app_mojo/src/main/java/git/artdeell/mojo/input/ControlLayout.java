@@ -421,6 +421,17 @@ public class ControlLayout extends FrameLayout {
 	protected void onAttachedToWindow() {
 		super.onAttachedToWindow();
 		ModUiServer.INSTANCE.contextListener = mContextRefresh;
+		// Diagnostic: shows whether this build and layout carry the Zenkai data (remove once everything works)
+		postDelayed(() -> {
+			int styled = 0, menus = 0;
+			for (ControlInterface b : getButtonChildren()) {
+				ControlData d = b.getProperties();
+				if (Tools.isValidString(d.zenkaiIcone)) styled++;
+				if (d.zenkaiMenu != null) menus++;
+			}
+			android.widget.Toast.makeText(getContext(), "Zenkai patch v9 | styled " + styled + " | menus " + menus
+					+ " | binds " + ModUiServer.INSTANCE.binds.length(), android.widget.Toast.LENGTH_LONG).show();
+		}, 3000);
 	}
 
 	@Override
